@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABURRAHMAN UMAR ABUBAKAR | Web3 & AI Visionary</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Orbitron:wght@400;700;900&display=swap');
+        
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --secondary: #06d6a0;
+            --accent: #f59e0b;
+            --dark: #0f0f23;
+            --darker: #070711;
+            --light: #f0f9ff;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Animated Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(125deg, var(--darker) 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(6, 214, 160, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+        
+        .card-hover {
+            transition: all 0.4s ease;
+            background: rgba(30, 27, 75, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+        
+        .skill-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(30, 27, 75, 0.7);
+            overflow: hidden;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px) rotate(0deg); }
+            50% { transform: translate(0, 15px) rotate(1deg); }
+            100% { transform: translate(0, -0px) rotate(0deg); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid var(--primary);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .glow {
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+        }
+        
+        .neon-border {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px var(--primary), inset 0 0 10px rgba(139, 92, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Animated Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header/Navigation -->
+    <header class="fixed w-full z-50 bg-dark/80 backdrop-blur-md py-4 px-4 sm:px-8 lg:px-16 neon-border">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tight orbitron">
+                <span class="gradient-text glow-text">ABDURRAHMAN UMAR ABUBAKAR</span>
+            </h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition duration-300">About</a>
+                <a href="#skills" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition duration-300">Skills</a>
+                <a href="#projects" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition duration-300">Projects</a>
+                <a href="#experience" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition duration-300">Journey</a>
+                <a href="#contact" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition duration-300">Connect</a>
+            </nav>
+            <button class="md:hidden text-gray-300">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <section class="min-h-screen flex items-center justify-center gradient-bg relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full grid-pattern"></div>
+        <div class="section-content max-w-7xl mx-auto py-16 px-4 sm:px-8 lg:px-16 text-center z-10">
+            <div class="floating mb-8">
+                <div class="hexagon w-64 h-64 mx-auto bg-gradient-to-br from-primary to-secondary flex items-center justify-center glow pulse">
+                    <img src="https://placehold.co/250x250/1f2937/ffffff?text=AUA" 
+                         onerror="this.style.display='none';"
+                         class="w-60 h-60 hexagon object-cover" 
+                         alt="ABURRAHMAN UMAR ABUBAKAR Profile Picture">
+                </div>
+            </div>
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 orbitron">
+                <span class="block">BUILDING THE</span>
+                <span class="gradient-text glow-text typewriter">FUTURE OF WEB3 & AI</span>
+            </h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
+                Transforming decentralized technology with intelligent systems that empower global innovation.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="#contact" class="inline-flex items-center justify-center bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold py-4 px-8 rounded-lg shadow-2xl transition duration-300 transform hover:scale-105 glow">
+                    <i class="fas fa-paper-plane mr-3"></i> Start Collaboration
+                </a>
+                <a href="#projects" class="inline-flex items-center justify-center bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-4 px-8 rounded-lg transition duration-300 neon-border">
+                    <i class="fas fa-code mr-3"></i> Explore Innovations
+                </a>
+            </div>
+            
+            <!-- Floating elements -->
+            <div class="absolute top-1/4 left-10 w-6 h-6 rounded-full bg-primary/30 floating" style="animation-delay: 0s;"></div>
+            <div class="absolute top-1/3 right-20 w-10 h-10 rounded-full bg-secondary/20 floating" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-8 h-8 rounded-full bg-accent/30 floating" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-1/3 right-1/3 w-12 h-12 rounded-full bg-primary/20 floating" style="animation-delay: 3s;"></div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div class="flex flex-col items-center text-gray-400">
+                <span class="text-sm mb-2">Scroll to Explore</span>
+                <div class="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-primary rounded-full mt-2 animate-bounce"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 gradient-bg relative overflow-hidden">
+        <div class="section-content max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
+            <h2 class="text-4xl font-bold text-center mb-4 orbitron">About The Vision</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12 rounded-full"></div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="bg-gradient-to-br from-primary/20 to-secondary/20 p-1 rounded-2xl glow">
+                        <div class="bg-dark/80 backdrop-blur-sm p-8 rounded-2xl">
+                            <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                                I'm <span class="text-primary font-semibold">ABDURRAHMAN UMAR ABUBAKAR</span>, a forward-thinking developer building at the intersection of <span class="font-semibold">Web3 decentralization</span> and <span class="font-semibold">AI intelligence</span>.
+                            </p>
+                            <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                                Currently advancing my knowledge at <span class="font-semibold">Bayero University Kano</span>, I'm driven by a relentless pursuit of innovation and a commitment to creating technology that empowers individuals and transforms systems.
+                            </p>
+                            <p class="text-lg text-gray-300 leading-relaxed">
+                                My work focuses on bridging the gap between complex blockchain technology and practical, user-friendly applications that solve real-world problems through intelligent automation.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating crypto elements -->
+                    <div class="absolute -top-5 -right-5 w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
+                        <i class="fab fa-ethereum text-primary text-2xl"></i>
+                    </div>
+                    <div class="absolute -bottom-5 -left-5 w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-secondary text-xl"></i>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-br from-primary/30 to-transparent p-4 rounded-xl card-hover">
+                            <i class="fas fa-university text-3xl mb-3 text-primary"></i>
+                            <h3 class="font-bold text-lg">Education</h3>
+                            <p class="text-gray-400 text-sm">B.Eng Agricultural And Environmental Engineering</p>
+                            <p class="text-primary text-sm">Bayero University Kano</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-secondary/30 to-transparent p-4 rounded-xl card-hover">
+                            <i class="fas fa-certificate text-3xl mb-3 text-secondary"></i>
+                            <h3 class="font-bold text-lg">Certifications</h3>
+                            <p class="text-gray-400 text-sm">Google Cloud AI</p>
+                            <p class="text-secondary text-sm">Automated Solutions</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 mt-8">
+                        <div class="bg-gradient-to-br from-accent/30 to-transparent p-4 rounded-xl card-hover">
+                            <i class="fas fa-code text-3xl mb-3 text-accent"></i>
+                            <h3 class="font-bold text-lg">Focus Areas</h3>
+                            <p class="text-gray-400 text-sm">Web3 & AI</p>
+                            <p class="text-accent text-sm">Development</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-primary/30 to-transparent p-4 rounded-xl card-hover">
+                            <i class="fas fa-chart-line text-3xl mb-3 text-primary"></i>
+                            <h3 class="font-bold text-lg">Expertise</h3>
+                            <p class="text-gray-400 text-sm">Crypto Trading</p>
+                            <p class="text-primary text-sm">Market Analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 gradient-bg relative overflow-hidden parallax" style="background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        <div class="absolute inset-0 bg-dark/80"></div>
+        <div class="section-content max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 relative z-10">
+            <h2 class="text-4xl font-bold text-center mb-4 orbitron">Technical Mastery</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12 rounded-full"></div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                
+                <!-- Technical Skills -->
+                <div class="bg-dark/60 backdrop-blur-sm p-8 rounded-2xl neon-border card-hover">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center orbitron">
+                        <i class="fas fa-code text-primary mr-3"></i>
+                        <span class="gradient-text">Technical Proficiencies</span>
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300 font-medium">Web3/Blockchain Development</span>
+                                <span class="text-primary">42%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 42%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300 font-medium">AI & Machine Learning</span>
+                                <span class="text-primary">77%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 77%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300 font-medium">Smart Contracts</span>
+                                <span class="text-primary">65%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300 font-medium">Crypto Trading & Analysis</span>
+                                <span class="text-primary">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Skills -->
+                <div class="bg-dark/60 backdrop-blur-sm p-8 rounded-2xl neon-border card-hover">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center orbitron">
+                        <i class="fas fa-user-tie text-secondary mr-3"></i>
+                        <span class="gradient-text">Professional Attributes</span>
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-primary/20 p-2 rounded-lg mr-4 mt-1">
+                                <i class="fas fa-bullseye text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-100">Visionary Thinking</h4>
+                                <p class="text-gray-400 text-sm">Anticipating future trends and building solutions for tomorrow's challenges.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-secondary/20 p-2 rounded-lg mr-4 mt-1">
+                                <i class="fas fa-lightbulb text-secondary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-100">Innovative Problem-Solving</h4>
+                                <p class="text-gray-400 text-sm">Applying creative approaches to complex technical challenges.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-accent/20 p-2 rounded-lg mr-4 mt-1">
+                                <i class="fas fa-users text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-100">Collaborative Leadership</h4>
+                                <p class="text-gray-400 text-sm">Building and guiding teams to achieve ambitious technological goals.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-primary/20 p-2 rounded-lg mr-4 mt-1">
+                                <i class="fas fa-rocket text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-100">Rapid Adaptation</h4>
+                                <p class="text-gray-400 text-sm">Mastering emerging technologies in fast-evolving digital landscapes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Technologies -->
+            <div class="mt-16">
+                <h3 class="text-2xl font-semibold text-center mb-8 orbitron">
+                    <span class="gradient-text">Technologies & Platforms</span>
+                </h3>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <div class="bg-dark/60 backdrop-blur-sm px-6 py-4 rounded-xl border border-primary/30 flex items-center card-hover">
+                        <i class="fab fa-ethereum text-purple-500 text-2xl mr-3"></i>
+                        <div>
+                            <span class="font-medium">Ethereum</span>
+                            <p class="text-gray-400 text-xs">Smart Contracts</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/60 backdrop-blur-sm px-6 py-4 rounded-xl border border-yellow-500/30 flex items-center card-hover">
+                        <i class="fab fa-python text-yellow-500 text-2xl mr-3"></i>
+                        <div>
+                            <span class="font-medium">Python</span>
+                            <p class="text-gray-400 text-xs">AI/ML Development</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/60 backdrop-blur-sm px-6 py-4 rounded-xl border border-yellow-400/30 flex items-center card-hover">
+                        <i class="fab fa-js-square text-yellow-400 text-2xl mr-3"></i>
+                        <div>
+                            <span class="font-medium">JavaScript</span>
+                            <p class="text-gray-400 text-xs">Web Development</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/60 backdrop-blur-sm px-6 py-4 rounded-xl border border-cyan-400/30 flex items-center card-hover">
+                        <i class="fab fa-react text-cyan-400 text-2xl mr-3"></i>
+                        <div>
+                            <span class="font-medium">React</span>
+                            <p class="text-gray-400 text-xs">Frontend Framework</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/60 backdrop-blur-sm px-6 py-4 rounded-xl border border-green-500/30 flex items-center card-hover">
+                        <i class="fas fa-database text-green-500 text-2xl mr-3"></i>
+                        <div>
+                            <span class="font-medium">SQL/NoSQL</span>
+                            <p class="text-gray-400 text-xs">Data Management</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/60 backdrop-blur-sm px-6 py-4 rounded-xl border border-orange-500/30 flex items-center card-hover">
+                        <i class="fab fa-git-alt text-orange-500 text-2xl mr-3"></i>
+                        <div>
+                            <span class="font-medium">Git</span>
+                            <p class="text-gray-400 text-xs">Version Control</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 gradient-bg relative overflow-hidden">
+        <div class="section-content max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
+            <h2 class="text-4xl font-bold text-center mb-4 orbitron">Innovation Portfolio</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12 rounded-full"></div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 -->
+                <div class="bg-dark/60 backdrop-blur-sm rounded-2xl overflow-hidden neon-border card-hover group">
+                    <div class="h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-chart-line text-white text-5xl z-10"></i>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-500"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 orbitron">Quantum Trading Engine</h3>
+                        <p class="text-gray-400 mb-4">Next-gen AI trading system with predictive analytics and risk-aware portfolio optimization.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">Python</span>
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">TensorFlow</span>
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">Web3</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center group-hover:translate-x-2 transition duration-300">
+                            Explore Project <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="bg-dark/60 backdrop-blur-sm rounded-2xl overflow-hidden neon-border card-hover group">
+                    <div class="h-48 bg-gradient-to-br from-secondary to-primary flex items-center justify-center relative overflow-hidden">
+                        <i class="fab fa-ethereum text-white text-5xl z-10"></i>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-500"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 orbitron">Nexus DeFi Protocol</h3>
+                        <p class="text-gray-400 mb-4">Multi-chain DeFi ecosystem with cross-chain swaps and yield optimization strategies.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">Solidity</span>
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">Web3.js</span>
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">DeFi</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center group-hover:translate-x-2 transition duration-300">
+                            Explore Project <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="bg-dark/60 backdrop-blur-sm rounded-2xl overflow-hidden neon-border card-hover group">
+                    <div class="h-48 bg-gradient-to-br from-primary to-accent flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-robot text-white text-5xl z-10"></i>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-500"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 orbitron">Neural Market Oracle</h3>
+                        <p class="text-gray-400 mb-4">Advanced neural network for real-time cryptocurrency price prediction and market sentiment analysis.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">PyTorch</span>
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">Python</span>
+                            <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">Data Science</span>
+                        </div>
+                        <a href="#" class="text-primary font-medium hover:underline flex items-center group-hover:translate-x-2 transition duration-300">
+                            Explore Project <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center justify-center bg-transparent border border-primary text-primary hover:bg-primary/10 font-bold py-3 px-6 rounded-lg transition duration-300 neon-border">
+                    <i class="fab fa-github mr-2"></i> Explore Full Portfolio on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 gradient-bg relative overflow-hidden parallax" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        <div class="absolute inset-0 bg-dark/80"></div>
+        <div class="section-content max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 relative z-10">
+            <h2 class="text-4xl font-bold text-center mb-4 orbitron">The Journey</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12 rounded-full"></div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                
+                <!-- Experience -->
+                <div>
+                    <h3 class="text-2xl font-semibold mb-8 flex items-center orbitron">
+                        <i class="fas fa-briefcase text-primary mr-3"></i>
+                        <span class="gradient-text">Professional Path</span>
+                    </h3>
+                    
+                    <div class="space-y-8">
+                        <div class="bg-dark/60 backdrop-blur-sm p-6 rounded-2xl neon-border card-hover">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-bold orbitron">Web3 Architect & Crypto Strategist</h4>
+                                <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">2022 - Present</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">Innovation Labs & Freelance</p>
+                            <ul class="text-gray-300 text-sm space-y-1">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Architected decentralized applications for users</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Developed algorithmic trading strategies with </span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Created predictive AI models for market analysis</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-dark/60 backdrop-blur-sm p-6 rounded-2xl neon-border card-hover">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-bold orbitron">AI Engineering Specialist</h4>
+                                <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">2023</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">Tech Futures Inc.</p>
+                            <ul class="text-gray-300 text-sm space-y-1">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Engineered ML models for automated decision systems</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Led Google Cloud AI certification initiatives</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Implemented scalable AI solution architectures</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education -->
+                <div>
+                    <h3 class="text-2xl font-semibold mb-8 flex items-center orbitron">
+                        <i class="fas fa-graduation-cap text-secondary mr-3"></i>
+                        <span class="gradient-text">Knowledge Foundation</span>
+                    </h3>
+                    
+                    <div class="space-y-8">
+                        <div class="bg-dark/60 backdrop-blur-sm p-6 rounded-2xl neon-border card-hover">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-bold orbitron">Bayero University Kano</h4>
+                                <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">2021 - Present</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">B.Eng Agricultural And Environmental Engineering</p>
+                            <ul class="text-gray-300 text-sm space-y-1">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Specialization in AI and Distributed Systems</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Advanced coursework in Algorithms and Machine Learning</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-secondary mt-1 mr-2 text-xs"></i>
+                                    <span>Research in Blockchain applications and AI ethics</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-dark/60 backdrop-blur-sm p-6 rounded-2xl neon-border card-hover">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-bold orbitron">Advanced Certifications</h4>
+                                <span class="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full">2023</span>
+                            </div>
+                            <ul class="text-gray-300 text-sm space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-award text-secondary mt-1 mr-2"></i>
+                                    <div>
+                                        <span class="font-medium">Google Cloud - Automated AI Solutions</span>
+                                        <p class="text-gray-400">Expertise in cloud-based AI model deployment and management</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-award text-secondary mt-1 mr-2"></i>
+                                    <div>
+                                        <span class="font-medium">Blockchain Council - Certified Web3 Developer</span>
+                                        <p class="text-gray-400">Mastery in smart contracts, DeFi protocols, and dApp development</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 gradient-bg relative overflow-hidden">
+        <div class="section-content max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">
+            <h2 class="text-4xl font-bold text-center mb-4 orbitron">Let's Build The Future</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12 rounded-full"></div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6 orbitron">
+                        <span class="gradient-text">Connect With Me</span>
+                    </h3>
+                    <p class="text-gray-300 mb-8 text-lg">
+                        I'm always excited to discuss new opportunities, collaborate on innovative projects, or explore the future of Web3 and AI together.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center bg-dark/60 backdrop-blur-sm p-4 rounded-xl neon-border card-hover">
+                            <div class="bg-primary/20 p-3 rounded-lg mr-4">
+                                <i class="fas fa-envelope text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Email</p>
+                                <p class="font-medium">umarabdulrahman171@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center bg-dark/60 backdrop-blur-sm p-4 rounded-xl neon-border card-hover">
+                            <div class="bg-primary/20 p-3 rounded-lg mr-4">
+                                <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Location</p>
+                                <p class="font-medium">Kano, Nigeria</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center bg-dark/60 backdrop-blur-sm p-4 rounded-xl neon-border card-hover">
+                            <div class="bg-primary/20 p-3 rounded-lg mr-4">
+                                <i class="fab fa-linkedin text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">LinkedIn</p>
+                                <p class="font-medium">linkedin.com/in/abdulau171</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center bg-dark/60 backdrop-blur-sm p-4 rounded-xl neon-border card-hover">
+                            <div class="bg-primary/20 p-3 rounded-lg mr-4">
+                                <i class="fab fa-github text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">GitHub</p>
+                                <p class="font-medium">github.com/dankano171</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark/60 backdrop-blur-sm p-8 rounded-2xl neon-border">
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-gray-300 mb-2">Your Name</label>
+                                <input type="text" id="name" class="w-full bg-dark/80 border border-primary/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary transition duration-300">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-300 mb-2">Your Email</label>
+                                <input type="email" id="email" class="w-full bg-dark/80 border border-primary/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary transition duration-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full bg-dark/80 border border-primary/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary transition duration-300">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-300 mb-2">Message</label>
+                            <textarea id="message" rows="5" class="w-full bg-dark/80 border border-primary/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary transition duration-300"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold py-4 px-6 rounded-lg shadow-2xl transition duration-300 transform hover:scale-105 glow">
+                            Send Message <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-darker py-12 px-4 sm:px-8 lg:px-16 border-t border-primary/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-bold orbitron">
+                        <span class="gradient-text glow-text">ABDURRAHMAN UMAR ABUBAKAR</span>
+                    </h2>
+                    <p class="text-gray-500 mt-2">Web3 Visionary & AI Engineer</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-medium text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-gray-500">
+                <p>© 2025 ABDURRAHMAN UMAR ABUBAKAR. Crafting the future with code and vision.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Particle Animation Script -->
+    <script>
+        // Particle animation for background
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let particles = [];
+        
+        const colors = [
+            'rgba(139, 92, 246, 0.5)',
+            'rgba(6, 214, 160, 0.5)',
+            'rgba(245, 158, 11, 0.5)',
+            'rgba(236, 72, 153, 0.5)'
+        ];
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+                
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${0.1 * (1 - distance/100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+        
+        init();
+        animate();
+        
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.card-hover').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Add skill bar animation on scroll
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const skillBars = entry.target.querySelectorAll('.skill-progress');
+                    skillBars.forEach(bar => {
+                        const width = bar.style.width;
+                        bar.style.width = '0';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 300);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('#skills .card-hover').forEach(el => {
+            skillObserver.observe(el);
+        });
+    </script>
+
+</body>
+</html>
